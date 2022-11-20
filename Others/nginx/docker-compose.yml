@@ -7,5 +7,5 @@ services:
     ports:
       - 81:81
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf
     privileged: true
