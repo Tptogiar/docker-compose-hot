@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  nginx-exporter:
+    image: docker.io/bitnami/nginx-exporter:0
+    ports:
+      - 9113:9113
+    command:
+      - '-nginx.scrape-uri=http://target.node.host.ip/stub_status'
