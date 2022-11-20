@@ -1,0 +1,44 @@
+# my global config
+global:
+  scrape_interval:     3s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 15s # By default, scrape targets every 15 seconds.
+
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  - job_name: 'for.monitor.node'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+    static_configs:
+      #      - targets: ['8.134.163.132:9090']
+      #        labels:
+      #          name: 'monitor:prometheus'
+      - targets: ['8.134.163.132:9100']
+        labels:
+          name: 'monitor:node-exporter'
+
+
+  - job_name: 'for.production.node'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['175.178.7.180:9000']
+        labels:
+          name: 'production:node-exporter'
+      - targets: ['8.134.163.132:9104']
+        labels:
+          name: 'production:mysql-exporter'
+      - targets: ["8.134.163.132:9113"]
+        labels:
+          name: 'production:nginx-exporter'
+
+
+
+  - job_name: 'pushgateway'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['8.134.163.132:9091' ]
+        labels:
+          name: 'pushgateway'
+    honor_labels: true
+

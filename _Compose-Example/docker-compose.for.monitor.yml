@@ -1,0 +1,72 @@
+version: '3.8'
+
+
+
+
+services:
+  prometheus:
+    image: bitnami/prometheus
+    container_name: java-tribe-software-contest-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=30d'
+      - '--web.enable-admin-api'
+    user: 0:0
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus/alerts/:/etc/prometheus/rules.d/
+      - ./prometheus/prometheus/data/:/prometheus
+
+
+  pushgateway:
+    image: prom/pushgateway:v1.4.2
+    container_name: java-tribe-software-contest-pushgateway
+    command: --persistence.file=/pushgateway/pushgateway.data
+    ports:
+      - 9091:9091
+    volumes:
+      - ./prometheus/pushgateway/data:/pushgateway
+
+
+
+  grafana:
+    image: grafana/grafana
+    container_name: java-tribe-software-contest-grafana
+    user: 0:0
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+
+  # expoters following
+
+  node_exporter:
+    image: prom/node-exporter:v1.3.1
+    container_name: java-tribe-software-contest-node-exporter
+    command:
+      - '--path.rootfs=/host'
+    network_mode: host
+    pid: host
+    restart: always
+    volumes:
+      - '/:/host:ro,rslave'
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter
+    ports:
+      - 9104:9104
+    environment:
+      - DATA_SOURCE_NAME=exporter:javatribe@(175.178.7.180:3307)/
+
+  nginx-exporter:
+    image: docker.io/bitnami/nginx-exporter:0
+    ports:
+      - 9113:9113
+    command:
+      - '-nginx.scrape-uri=http://175.178.7.180:81/stub_status'

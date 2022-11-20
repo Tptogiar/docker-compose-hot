@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  scoring-nginx: # 服务名称
+    container_name: scoring-nginx
+    image: nginx
+    ports:
+      - 81:81
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf # 挂载 conf 文件
+      - ./html:/usr/share/nginx/html
+    privileged: true # 解决 nginx 的文件调用权限
+    networks:
+      mynetwork:
+        ipv4_address: 172.19.0.2
+
+  mysql:
+    container_name: scoring-mysql
+    image: mysql:latest
+    volumes:
+      - ./mysql/:/var/lib/mysql/
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    networks:
+      mynetwork:
+        ipv4_address: 172.19.0.3
+
+  redis:
+    container_name: scoring-redis
+    image: redis:latest
+    networks:
+      mynetwork:
+        ipv4_address: 172.19.0.4
+
+  tomcat:
+    container_name: scoring-tomcat
+    image: tomcat:8.5.70
+    ports:
+      - 8081:8080
+    volumes:
+      - ./war/:/usr/local/tomcat/webapps # 放 war 包
+      - ./tomcatlog/:/usr/local/tomcat/logs
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      mynetwork:
+        ipv4_address: 172.19.0.5
+
+
+networks:
+  mynetwork:
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
+          gateway: 172.19.0.1
