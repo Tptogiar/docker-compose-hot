@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      # 设置环境变量 时区上海 编码UTF-8
+      TZ: Asia/Shanghai
+      LANG: en_US.UTF-8
+    volumes:
+      - ./conf.cnf:/redis.conf:rw
+      - ./data:/data:rw
