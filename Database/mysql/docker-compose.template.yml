@@ -1,3 +1,14 @@
 version: "3"
 
 services:
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    privileged: true
+    volumes:
+      - ./mysql/logs/:/logs
+      - ./mysql/data/:/var/lib/mysql/
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
