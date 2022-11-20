@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  influxdb:
+    image: tutum/influxdb:0.9
+    restart: always
+    environment:
+      - PRE_CREATE_DB=cadvisor
+    ports:
+      - "3003:8083"
+      - "3002:8086"
+    volumes:
+      - ./data/influxdb:/data
