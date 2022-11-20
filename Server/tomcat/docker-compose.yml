@@ -3,7 +3,7 @@ version: "3"
 services:
   tocmat:
     image: tomcat:8.0
-    container_name: cicd-staging-tomcat
+    container_name: tomcat
     privileged: true
     ports:
       - '8081:8080'

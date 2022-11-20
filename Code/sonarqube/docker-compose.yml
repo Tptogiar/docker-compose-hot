@@ -11,7 +11,7 @@ services:
   postgresql:
     image: postgres:12
     restart: always
-    container_name: cicd-sonarqube-postgresql
+    container_name: sonarqube-postgresql
     privileged: true
     ports:
       - 5432:5432
@@ -29,7 +29,7 @@ services:
   sonar:
     image: sonarqube:lts-community
     restart: always
-    container_name: cicd-sonarqube
+    container_name: sonarqube
     privileged: true
     depends_on:
       - postgresql

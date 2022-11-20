@@ -10,7 +10,7 @@ services:
       - 8080:8080
     volumes:
       - ./datas:/var/jenkins_home
-      - ./maven.settings.xml:/var/maven/conf/settings.xml
+      - ./conf/maven.settings.xml:/var/maven/conf/settings.xml
 
 
 

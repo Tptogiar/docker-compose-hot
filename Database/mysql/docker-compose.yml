@@ -6,8 +6,8 @@ services:
     image: mysql:latest
     privileged: true
     volumes:
-      - ./mysql/logs/:/logs
-      - ./mysql/data/:/var/lib/mysql/
+      - ./logs/:/logs
+      - ./data/:/var/lib/mysql/
     ports:
       - "3306:3306"
     environment:
