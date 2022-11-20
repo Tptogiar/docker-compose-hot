@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  mysqlexporter:
+    image: prom/mysqld-exporter
+    ports:
+      - "9104:9104"
+    environment:
+      - DATA_SOURCE_NAME=root:123456@(mysql:3306)/mark
