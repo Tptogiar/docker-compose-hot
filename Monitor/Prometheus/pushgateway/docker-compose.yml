@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  pushgateway:
+    image: prom/pushgateway:v1.4.2
+    container_name: pushgateway
+    command: --persistence.file=/pushgateway/pushgateway.data
+    ports:
+      - 9091:9091
+    volumes:
+      - ./data:/pushgateway
