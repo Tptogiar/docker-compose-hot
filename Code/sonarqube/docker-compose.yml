@@ -1,0 +1,49 @@
+version: '3'
+
+networks:
+  network-sonarqube:
+    ipam:
+      config:
+        - subnet: 173.20.0.0/16
+          gateway: 173.20.0.1
+
+services:
+  postgresql:
+    image: postgres:12
+    restart: always
+    container_name: cicd-sonarqube-postgresql
+    privileged: true
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres/postgresql/:/var/lib/postgresql
+      - ./postgres/data/:/var/lib/postgresql/data
+    environment:
+      TZ: Asia/Shanghai
+      POSTGRES_USER: tptogiar
+      POSTGRES_PASSWORD: tptogiar
+      POSTGRES_DB: sonar
+    networks:
+      network-sonarqube:
+        ipv4_address: 173.20.0.2
+  sonar:
+    image: sonarqube:lts-community
+    restart: always
+    container_name: cicd-sonarqube
+    privileged: true
+    depends_on:
+      - postgresql
+    volumes:
+      - ./sonarqube/extensions:/opt/sonarqube/extensions
+      - ./sonarqube/logs:/opt/sonarqube/logs
+      - ./sonarqube/data:/opt/sonarqube/data
+      - ./sonarqube/conf:/opt/sonarqube/conf
+    ports:
+      - 9001:9000
+    environment:
+      SONARQUBE_JDBC_USERNAME: tptogiar
+      SONARQUBE_JDBC_PASSWORD: tptogiar
+      SONARQUBE_JDBC_URL: jdbc:postgresql://173.20.0.2:5432/sonar
+    networks:
+      network-sonarqube:
+        ipv4_address: 173.20.0.3
