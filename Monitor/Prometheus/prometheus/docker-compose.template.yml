@@ -13,6 +13,6 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus/prometheus/alerts/:/etc/prometheus/rules.d/
-      - ./prometheus/prometheus/data/:/prometheus
+      - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alerts/:/etc/prometheus/rules.d/
+      - ./data/:/prometheus
