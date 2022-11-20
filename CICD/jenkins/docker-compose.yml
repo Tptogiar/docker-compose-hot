@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  myjenkins:
+    image: jenkins/jenkins
+    container_name: jenkins
+    user: root
+    privileged: true
+    ports:
+      - 50000:50000
+      - 8080:8080
+    volumes:
+      - ./datas:/var/jenkins_home
+      - ./maven.settings.xml:/var/maven/conf/settings.xml
+
+
+
+
