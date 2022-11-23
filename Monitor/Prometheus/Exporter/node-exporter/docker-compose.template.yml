@@ -3,14 +3,15 @@ version: "3"
 services:
   node_exporter:
     image: prom/node-exporter:v1.3.1
-    container_name: exporter
+    container_name: node-exporter
     command:
-#      enable this flag to ensure the exporter can touch the host filesystem
+      #      enable this flag to ensure the exporter can touch the host filesystem
       - '--path.rootfs=/host'
-#      to use the host network pattern to ensure the exporter can touch the real host network
+      - '--web.listen-address=:9101'
+    #      to use the host network pattern to ensure the exporter can touch the real host network
     network_mode: host
     pid: host
     restart: always
     volumes:
-#            enable this flag to ensure the exporter can touch the host filesystem
+      #            enable this flag to ensure the exporter can touch the host filesystem
       - '/:/host:ro,rslave'
