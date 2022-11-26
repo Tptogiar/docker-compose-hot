@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    user: 0:0
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/var/lib/grafana
+    environment:
+      #      default admin acount password
+      - GF_SECURITY_ADMIN_PASSWORD=admin
